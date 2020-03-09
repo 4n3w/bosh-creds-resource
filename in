@@ -21,6 +21,9 @@ cat > "$payload" <&0
 
 pcf_opsman_admin_username=$(jq -r '.source.pcf_opsman_admin_username // ""' < $payload)
 pcf_opsman_admin_password=$(jq -r '.source.pcf_opsman_admin_password // ""' < $payload)
+pcf_opsman_client_id=$(jq -r '.source.pcf_opsman_client_id // ""' < $payload)
+pcf_opsman_client_secret=$(jq -r '.source.pcf_opsman_client_secret // ""' < $payload)
+
 opsman_url=$(jq -r '.source.opsman_url // ""' < $payload)
 
 jumpbox_url=$(jq -r '.source.jumpbox_url // ""' < $payload)
@@ -30,6 +33,8 @@ jumpbox_ssh_key_escaped=$(jq '.source.jumpbox_ssh_key // ""' < $payload)
 jumpbox_username=$(jq -r '.source.jumpbox_username // ""' < $payload)
 
 CURL="om --target https://${opsman_url} -k \
+  --client-id $pcf_opsman_client_id \
+  --client-secret $pcf_opsman_client_secret \
   --username $pcf_opsman_admin_username \
   --password $pcf_opsman_admin_password \
   curl"
